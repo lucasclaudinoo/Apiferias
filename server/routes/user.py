@@ -34,20 +34,16 @@ async def get_user(id: str):
 
 @router.delete("/delete_user/{user_id}")
 async def delete_user(id: str):
-    user_delete = user_collection.find_one({"_id": ObjectId(id)})
-    if user_delete is None:
+    if not user_collection.find_one({"_id": ObjectId(id)}):
         return ("O usuario não existe")
-    else:
-        user_collection.delete_one({"_id": ObjectId(id)})
-        return "Usuario deletado com sucesso"
+    user_collection.delete_one({"_id": ObjectId(id)})
+    return ("Usuario deletado com sucesso")
 
 
 @router.put("/update_user/{user_id}")
 async def update_user(user: UserSchemaUpdate):
-    user_update = user_collection.find_one({"_id": ObjectId(id)})
-    if user_update is None:
+    if not user_collection.find_one({"_id": ObjectId(user.id)}):           
         return ("O usuario não existe")
-    else:
-        user_collection.update_one({"_id": ObjectId(id)}, {
-                                   "$set": user.__dict__})
-        return "Usuario atualizado com sucesso"
+    user = user_collection.update_one({"_id": ObjectId(user.id)}, {"$set": user.__dict__})
+    print(user.upserted_id)
+    return "Usuario atualizado com sucesso" + user.upserted_id
