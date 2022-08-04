@@ -8,7 +8,6 @@ class UserSchema(BaseModel):
     project: str
 
 class UserSchemaUpdate(BaseModel):
-    id: str
     name: str
     email: str
     password: str
