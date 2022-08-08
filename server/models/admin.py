@@ -1,16 +1,12 @@
 from bson import ObjectId
 from pydantic import BaseModel
 
-class UserSchema(BaseModel):
+class AdminSchema(BaseModel):
     name: str
     email: str
     password: str
-    project: str
-    admin: bool
 
-class UserSchemaUpdate(BaseModel):
+class AdminSchemaUpdate(BaseModel):
     name: str
     email: str
     password: str
-    project: str
-    admin: bool
