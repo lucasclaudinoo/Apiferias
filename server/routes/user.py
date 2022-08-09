@@ -30,9 +30,11 @@ async def get_user(id: str):
     user = user_collection.find_one({"_id": ObjectId(id)})
     user["_id"] = str(user["_id"])
     return user
-    
+
+
 @router.put("/update_user/{user_id}")
 async def update_user(id: str, user: UserSchemaUpdate):
-    if not user_collection.find_one({"_id": ObjectId(id)}):           
+    if not user_collection.find_one({"_id": ObjectId(id)}):
         return ("O usuario não existe")
-    return "Quantidade de usuários atualizados: " + str(user_collection.update_one({"_id": ObjectId(id)}, {"$set": user.__dict__}).modified_count)
+    user_collection.update_one({"_id": ObjectId(id)}, {"$set": user.__dict__})
+    return "Usuario atualizado com sucesso"
