@@ -1,5 +1,8 @@
-import datetime
 from pydantic import BaseModel
+from typing import List, Optional
+from bson.objectid import ObjectId
+from datetime import datetime
+
 
 class Data_ferias(BaseModel):
     name: str
@@ -8,6 +11,8 @@ class Data_ferias(BaseModel):
     data_fim: str
     dias_utilizados: int
     dias_restantes: int
-    status: str
-    created_at: datetime.now()
+    status: str = "aguardando"
+    created_at: datetime = datetime.now()
+
+
     
