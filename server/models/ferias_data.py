@@ -2,9 +2,8 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class Data_ferias(BaseModel):
-    name: str
-    email: str
+class DataFerias(BaseModel):
+    user_id: str
     data_inicio: str
     data_fim: str
     dias_utilizados: int

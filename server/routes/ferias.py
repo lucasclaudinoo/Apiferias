@@ -1,18 +1,19 @@
 from fastapi import APIRouter
 from server.database.database import db
-from server.models.ferias_data import Data_ferias
-
+from server.models.ferias_data import DataFerias
+from bson import ObjectId
 
 router = APIRouter()
 
 
 @router.post("/create")
-async def create_ferias(ferias: Data_ferias):
-    if db["ferias"].find_one({"email": ferias.email}):
-        return "O email " + ferias.email + " já existe"
-    return "Férias criado com sucesso com id: " +\
-        str(db["ferias"].insert_one(ferias.__dict__).inserted_id)
-
+async def create_ferias(ferias: DataFerias, user_id: str):
+    user = db["user"].find_one(filter={"_id": user_id})
+    if user:
+        user.user_id = ObjectId(user.user_id)
+        return "Férias criado com sucesso com id: " +\
+            str(db["ferias"].insert_one(ferias.__dict__).inserted_id)
+    return "Usuário não existe"
 
 @router.get("/get_ferias/{ferias_id}")
 async def get_ferias(email: str):
@@ -32,3 +33,13 @@ async def delete_ferias(email: str):
         return ("A ferias não existe")
     db["ferias"].delete_one({"email": email})
     return ("A ferias foi deletada")
+
+@router.put("/aprove_ferias/{ferias_id}")
+async def aprove_ferias(email: str, user_id: str):
+    user = db["user"].find_one(filter={"_id": user_id})
+    if user["admin"]:
+        if not db["ferias"].find_one({"email": email}):
+            return "A ferias não existe"
+        db["ferias"].update_one({"email": email}, {"$set": {"status": True}})
+        return "A ferias foi aprovada"
+    return "Usuário sem permissão"
