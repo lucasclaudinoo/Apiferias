@@ -1,16 +1,10 @@
-class Pessoa():
-    nome: str
-    idade: int
-    cpf: str
+total_ferias = ["ferias1", "ferias2", "ferias3"]
+total_ferias_ex = []
 
-claudinho = Pessoa()
-claudinho.nome = "Lucas"
-claudinho.idade = 21
-claudinho.cpf = "002.444.852-65"
 
-david = Pessoa()
-david.nome = "Davi"
-david.idade = 29
-david.cpf = "02244485265"
 
-print(david)
+total_ferias = [ferias for ferias in total_ferias]
+print(total_ferias)
+
+for i in total_ferias:
+    total_ferias_ex.append(i)

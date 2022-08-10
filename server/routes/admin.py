@@ -16,7 +16,7 @@ async def verify_admin(id: str):
     return "O usuario é administrador"
 
 
-@router.delete("/delete_user/{user_id}")
+@router.delete("/delete_user")
 async def delete_user(id: str):
     if not user_collection.find_one({"_id": ObjectId(id)}):
         return "O usuario não existe"
