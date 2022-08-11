@@ -17,12 +17,13 @@ async def create_user(user: UserSchema) -> str:
 
 
 @router.get("/get_users")
-async def get_users():
-    users = user_collection.find()
-    users = [user for user in users]
-    for user in users:
-        user["_id"] = str(user["_id"])
-    return users
+async def get_all_users():
+    total_users = user_collection.find()
+    all_users = []
+    for users in total_users:
+        users["_id"] = str(users["_id"])
+        all_users.append(users)
+    return all_users
 
 
 @router.get("/list_user/{user_id}")

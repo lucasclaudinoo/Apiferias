@@ -41,6 +41,15 @@ async def list_all_ferias_user(user_id: str):
     return ferias_return
 
 
+@router.put("/update_ferias")
+async def update_ferias(id: str, ferias: DataFerias):
+    if not ferias_collection.find_one({"_id": ObjectId(id)}):
+        return ("A férias não existe")
+    ferias_collection.update_one({"_id": ObjectId(id)}, {
+        "$set": ferias.__dict__})
+    return "Férias atualizada com sucesso"
+
+
 @router.put("/update_ferias_status")
 async def approve_ferias(email: str, id: str, status: bool):
     user = user_collection.find_one(filter={"email": email})
@@ -58,6 +67,7 @@ async def approve_ferias(email: str, id: str, status: bool):
 
     return "O período de férias foi " + response[status].lower()
 
+
 @router.delete("/delete_ferias")
 async def delete_ferias(id: str):
 
@@ -66,4 +76,3 @@ async def delete_ferias(id: str):
 
     ferias_collection.delete_one({"_id": ObjectId(id)})
     return ("A ferias foi deletada")
-
